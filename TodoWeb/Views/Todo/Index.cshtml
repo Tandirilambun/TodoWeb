@@ -1,0 +1,73 @@
+﻿@model TodoWeb.TodoVM.TodoViewModel
+@{
+    ViewData["Title"] = "Todo Home";
+}
+
+<partial name="_ModalAlert"/>
+<partial name="_NotificationToast"/>
+
+<h1 class="my-5 title-head">Todo</h1>
+<div class="d-flex justify-content-center my-5">
+    <div>
+        <form asp-controller="Todo" asp-action="Index" method="get">
+            <label for="category-filter" class="mb-2">Filter by: </label>
+            <div class="d-flex gap-2">
+                <select id="category-filter" name="catId" class="form-select" asp-items="Model.Categories" value="@Model.Category_note_id">
+                    <option value=0>All</option>
+                </select>
+                <button type="submit" class="btn btn-primary"><i class="bi bi-funnel"></i></button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="row row-cols-5 gap-4"> 
+    @foreach(var todo in Model.Todoes)
+    {
+        <div class="sticky-notes p-4 d-flex flex-column rounded-5 ">
+            @if (todo.IsCompleted)
+            {
+                <div class="todo-status rounded-circle bg-success">
+                    <i class="bi bi-check"></i>
+                </div>
+            }
+            <h5 class="">@todo.Title</h5>
+            <p class="m-0 description">@todo.Description</p>
+            <div class="mt-auto d-flex align-items-lg-center justify-content-between">
+                <p class="rounded-1 bg-success m-0 px-3 category-tag">@todo.Category.Category_name</p>
+                <div class="group-btn">
+                    <button class="btn-act p-1" type="button" data-bs-toggle="modal" data-bs-target="#alertModal" onclick="oldValue(@todo.Note_id)">
+                        <i class="bi bi-trash2"></i>
+                    </button>
+                    <a class="btn-act p-1" asp-controller="Todo" asp-action="Update" asp-route-id="@todo.Note_id">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="d-flex justify-content-between">
+            <p class="m-0 time-notes text-end">@todo.UpdatedAt.ToString("dd/MM/yyyy")</p>
+            <p class="m-0 time-notes text-end">@todo.UpdatedAt.ToString("HH:mm")</p>
+            </div>
+        </div>
+    }
+</div>
+
+<a class="bg-warning rounded-circle button-add" asp-controller="Todo" asp-action="Create">
+    <i class="bi bi-pencil-square"></i>
+</a>
+
+<script>
+    function oldValue(id){
+        $.ajax({
+            url : '@Url.Action("GetDeleteData")',
+            type : "GET",
+            data: {id : id},
+            success: function (data) {
+                console.log(data);
+                $('#todo-item').val(data.note_id);
+            }
+        });
+    };
+</script>
+
+
+

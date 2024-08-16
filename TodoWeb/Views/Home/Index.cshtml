@@ -1,0 +1,27 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject UserManager<User> userManager
+
+@{
+    ViewData["Title"] = "Home Page";
+    var user = await userManager.GetUserAsync(User);
+}
+
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+@section Scripts{
+    @if (TempData["login"] != null)
+    {
+        <script>
+            Swal.fire({
+                title: "@TempData["login"]",
+                text: "Welcome @user.UserName",
+                icon: "success",
+                timer: 1500
+            });
+        </script>
+    }
+}

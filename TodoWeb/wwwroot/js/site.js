@@ -1,0 +1,25 @@
+﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+// for details on configuring this project to bundle and minify static web assets.
+
+//// Write your JavaScript code.
+
+function input_change() {
+    var txt_title = document.getElementById("input-title");
+    var txt_body = document.getElementById("input-body");
+    txt_title.style.height = 'auto';
+    txt_title.style.height = txt_title.scrollHeight + 'px';
+    txt_body.style.height = 'auto';
+    txt_body.style.height = txt_body.scrollHeight + 'px';
+    if (txt_title.value.length > 0 || txt_body.value.length > 0) {
+        button_add.classList.add("button-translate");
+        button_add.classList.remove("button-create");
+    } else {
+        button_add.classList.remove("button-translate");
+        button_add.classList.add("button-create");
+    }
+};
+
+document.getElementById('select-category').addEventListener('change', function () {
+    button_add.classList.add("button-translate");
+    button_add.classList.remove("button-create");
+});

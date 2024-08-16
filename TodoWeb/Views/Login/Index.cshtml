@@ -1,0 +1,78 @@
+﻿@model TodoWeb.TodoVM.AuthVM
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
+}
+@* <partial name="_ValidationScriptsPartial" /> *@
+
+<div class="auth-layout">
+    <div id="login-form" class="d-flex justify-content-center align-items-center login-view">
+        <div class="login-card p-5">
+            <h1 class="">Login</h1>
+            <div asp-validation-summary="ModelOnly" class="alert alert-dismissible alert-danger">
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            <form method="post" asp-controller="Login" asp-action="LoginUser">
+                <div>
+                    <label asp-for="@Model.UserName" class="form-label mt-4">Email address</label>
+                    <input asp-for="@Model.UserName" type="text" class="form-control" id="@Model.UserName" aria-describedby="emailHelp" placeholder="Enter email or username">
+                </div>
+                <div>
+                    <label asp-for="@Model.Password" class="form-label mt-4">Password</label>
+                    <input asp-for="@Model.Password" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" autocomplete="off">
+                </div>
+                <div class="my-4">
+                    <button type="submit" class="btn btn-primary btn-login rounded-pill">Sign In</button>
+                </div>
+            </form>
+            <div class="d-flex">
+                <p class="my-0 me-1">on't have any account yet ?</p>
+                <div class="move-btn" onclick="ToRegister()">
+                    Register here
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="register-form" class="d-flex justify-content-center align-items-center login-view">
+        <div class="login-card p-5 ">
+            <h1 class="">Register</h1>
+            <form method="post" asp-controller="Login" asp-action="Register">
+                <div>
+                    <label for="register-username" class="form-label mt-4">Username</label>
+                    <input name="regUsername" id="register-username" type="text" class="form-control" aria-describedby="emailHelp" placeholder="Enter username">
+                </div>
+                <div>
+                    <label for="register-email" class="form-label mt-4">Email address</label>
+                    <input name="regEmail" id="register-email" type="email" class="form-control" aria-describedby="emailHelp" placeholder="Enter email">
+                </div>
+                <div>
+                    <label for="register-password" class="form-label mt-4">Password</label>
+                    <input name="regPassword" id="register-password" type="password" class="form-control" placeholder="Password" autocomplete="off">
+                </div>
+                <div class="my-4">
+                    <button type="submit" class="btn btn-primary btn-login rounded-pill">Register</button>
+                </div>
+            </form>
+            <div class="d-flex">
+                <p class="my-0 me-1">Already have an account ?</p>
+                <div class="move-btn" onclick="ToLogin()">
+                    Sign In
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    const div_login = document.getElementById("login-form");
+    const div_reg = document.getElementById("register-form");
+    function ToRegister() {
+        div_reg.scrollIntoView();
+    }
+    function ToLogin() {
+        div_login.scrollIntoView();
+    }
+</script>
+
+
+

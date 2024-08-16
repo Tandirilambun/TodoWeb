@@ -1,0 +1,22 @@
+﻿@model TodoWeb.TodoVM.TodoViewModel;
+@{
+    ViewData["Title"] = "Create";
+}
+<form method="post" asp-action="CreateTodo">
+    <div class="row">
+        <div class="d-flex flex-column input-group col">
+            <textarea id="input-title" asp-for="TodoSingle.Title" class="input-form form-title mb-2" type="text" placeholder="Title" oninput="input_change()"></textarea>
+            <textarea id="input-body" asp-for="TodoSingle.Description" class="input-form form-body" type="text" placeholder="Body" oninput="input_change()"></textarea>
+        </div>
+        <div class="col-3">
+            <h5 class="category-title mb-4">Category</h5>
+            <select id="select-category" class="form-select" asp-for="TodoSingle.Category.Category_id" asp-items="Model.Categories"></select>
+        </div>
+
+    </div>
+    <button type="submit" class="btn bg-warning rounded-circle button-create" id="button_add">
+        <i class="bi bi-pencil-square"></i>
+    </button>
+</form>
+
+

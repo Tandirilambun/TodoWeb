@@ -1,0 +1,39 @@
+﻿@model TodoWeb.TodoVM.TodoViewModel;
+
+@{
+    ViewData["Title"] = "Update";
+}
+
+<form method="post" asp-action="UpdateTodo">
+    <div class="row">
+        <div class="d-flex flex-column input-group col">
+            <input type="hidden" value="@Model.Note_id" asp-for="@Model.Note_id" />
+            <textarea id="input-title" asp-for="@Model.Note_title" class="input-form form-title mb-2" type="text" placeholder="Title" oninput="input_change()"></textarea>
+            <textarea id="input-body" asp-for="@Model.Note_description" class="input-form form-body" type="text" placeholder="Body" oninput="input_change()"></textarea>
+        </div>
+        <div class="col-3">
+            <h5 class="category-title mb-4">Category</h5>
+            <select id="select-category" class="form-select" asp-for="@Model.Category_note_id" asp-items="Model.Categories" value="@Model.Category_note_id"></select>
+            <div class="form-check my-2">
+                <input class="form-check-input" type="checkbox" id="flexCheckDefault" asp-for="@Model.Note_completed">
+                <label class="form-check-label" for="flexCheckDefault">
+                    Completed
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <button type="submit" class="btn bg-warning rounded-circle button-create" id="button_add">
+        <i class="bi bi-pencil-square"></i>
+    </button>
+</form>
+<script>
+    const checkbox = document.getElementById('flexCheckDefault');
+    checkbox.addEventListener('change', function () {
+        checkbox.value = checkbox.checked ? 'true' : 'false';
+        button_add.classList.add("button-translate");
+        button_add.classList.remove("button-create");
+        console.log(checkbox.value);
+    })
+    @Model.Note_completed ? checkbox.checked : checkbox.unchecked;
+</script>

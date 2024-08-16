@@ -1,0 +1,197 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.sticky-notes {
+    width: 300px;
+    height: 300px;
+    text-decoration: none;
+    background-color: #EEEEEE;
+    transition: ease-in-out 200ms
+}
+    .sticky-notes:hover {
+        transform: scale(1.03);
+        background-color: #EEEDEB;
+    }
+
+.sticky-notes .description{
+    font-size:15px;
+}
+.sticky-notes .time-notes {
+    font-size: 12px;
+}
+.sticky-notes h5{
+    color : black;
+    font-size:large;
+}
+.category-tag{
+    color:white;
+    font-size:13px;
+}
+.group-btn i{
+    color:dimgray;
+    font-size:16px;
+}
+
+.btn-act{
+    background-color:transparent;
+    outline:none;
+    border:none;
+}
+
+.button-add{
+    position:absolute;
+    right:10%;
+    bottom:10%;
+    padding: 20px 24px;
+    transition:ease-in-out 100ms;
+}
+.button-add:hover{
+    transform:scale(1.1);
+}
+
+.button-add i{
+    color:white;
+    font-size:17px;
+}
+
+.input-form{
+    border:none;
+}
+
+.input-form:focus{
+    border:none;
+    outline:none;
+}
+
+.input-form.form-title {
+    font-size: 50px;
+    font-weight: bolder;
+    overflow: hidden;
+    resize: none;
+}
+
+.input-form.form-body{
+    font-size:30px;
+    font-weight:300;
+    overflow:hidden;
+    resize:none;
+}
+.category-title{
+    font-size:50px;
+    font-weight:bolder;
+}
+.button-create{
+    position: absolute;
+    right: 10%;
+    bottom: 10%;
+    padding: 20px 24px;
+    transform:translateY(90px);
+    transition:ease-in-out 200ms;
+    opacity:0;
+}
+.button-create i{
+    color:white;
+}
+
+.button-translate {
+    position: absolute;
+    right: 10%;
+    bottom: 10%;
+    padding: 20px 24px;
+    transform: translateY(0px);
+    animation: go-up ease-in-out 200ms;
+    transition: ease-in-out 200ms;
+}
+
+@keyframes go-up{
+    0%{
+        transform:translateY(90px);
+        opacity:0;
+    }
+    80%{
+        transform:translateY(-10px);
+    }
+    100% {
+        transform: translateY(0px);
+        opacity: 1;
+    }
+}
+.button-translate:hover {
+    transform: scale(1.1);
+    transition: ease-in-out 200ms;
+}
+.todo-status {
+    position: absolute;
+    transform: translate(250px, -30px);
+    padding: 4px 8px;
+    border: 1px solid green;
+}
+.todo-status i{
+    color: white;
+}
+
+.login-card{
+    width:550px;
+    height: fit-content;
+    background-color:rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(4px);
+    border-radius:2rem;
+}
+
+
+.login-card h1{
+    font-size:50px;
+    font-weight:bolder;
+    text-align:center;
+}
+
+.login-view{
+    height: 100dvh;
+}
+
+.btn-login{
+    width:100%;
+}
+
+.auth-body{
+    overflow:hidden;
+    scroll-behavior:smooth;
+}
+
+#login-form{
+    background: url('../images/wave-haikei.svg') no-repeat center;
+    background-size:cover;
+}
+#register-form {
+    background-color: #71aaff;
+}
+#register-form input {
+    background-color: #e0ecff;
+}
+.move-btn {
+    font-weight: bold;
+    color: #0066ff;
+    cursor:pointer;
+}
+
+.title-head{
+    font-weight:bolder;
+    font-size:50px;
+    text-align:center;
+}

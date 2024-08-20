@@ -23,5 +23,13 @@ namespace TodoWeb.Utils
                 return Convert.ToBase64String(key);
             }
         }
+        public static DateTime GetJktTime()
+        {
+            TimeZoneInfo jakartaZone = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time");
+
+            DateTime jakartaTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, jakartaZone);
+
+            return TimeZoneInfo.ConvertTimeToUtc(jakartaTime, jakartaZone);
+        }
     }
 }

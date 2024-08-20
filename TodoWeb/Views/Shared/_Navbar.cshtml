@@ -1,7 +1,4 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
 @inject UserManager<User> userManager
 @{
     var user = await userManager.GetUserAsync(User);
@@ -25,6 +22,9 @@
                 <li class="nav-item">
                     <a class="nav-link text-dark" asp-area="" asp-controller="Todo" asp-action="Index">Todo Page</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Project" asp-action="Index">Project Page</a>
+                </li>
                 <li class="nav-item ms-auto me-5">
                     <div class="dropdown">
                         <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -37,7 +37,6 @@
                         </ul>
                     </div>
                 </li>
-
             </ul>
         </div>
     </div>

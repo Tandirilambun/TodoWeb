@@ -17,5 +17,11 @@ namespace TodoWeb.Models
         public bool Keep_Signin { get; set; }
 
         public ICollection<Todo> Todos { get; set; }
+
+        public ICollection<Projects> Projects { get; set; }
+
+        public ICollection<Participants> Participants { get; set; }
+
+        public ICollection<Tasks> Tasks { get; set; }
     }
 }

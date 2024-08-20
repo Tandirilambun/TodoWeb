@@ -1,0 +1,277 @@
+﻿@import url('https://fonts.cdnfonts.com/css/lufga');
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    font-family: 'Lufga', sans-serif;
+}
+
+
+.title-head {
+    font-weight: bolder;
+    font-size: 50px;
+    text-align: center;
+}
+
+.input-step {
+    height: 100dvh;
+    display: flex;
+    align-items: center;
+}
+
+.step-circle {
+    background-color: aqua;
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.side-step {
+    height: 100dvh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    z-index: 999;
+}
+
+.step-connector {
+    height: 100vh;
+    background-color: aqua;
+    position: absolute;
+    width: 7px;
+    top: 28.3%;
+    left: 18%;
+    z-index: -1;
+}
+
+.user-table {
+    width: 100%;
+}
+
+    .user-table thead tr th:first-child {
+        width: 10%;
+    }
+
+    .user-table thead tr th:nth-child(2) {
+        width: 75%;
+    }
+
+    .user-table thead tr th:nth-child(3) {
+        width: 15%;
+    }
+
+.title-head {
+    font-weight: bolder;
+    font-size: 50px;
+    text-align: center;
+}
+
+.input-step {
+    height: 100dvh;
+    display: flex;
+    align-items: center;
+}
+
+.step-circle {
+    background-color: aqua;
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.side-step {
+    height: 100dvh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    z-index: 999;
+}
+
+.step-connector {
+    height: 100vh;
+    background-color: aqua;
+    position: absolute;
+    width: 7px;
+    top: 28.3%;
+    left: 18%;
+    z-index: -1;
+}
+
+.user-table {
+    width: 100%;
+}
+
+    .user-table thead tr th:first-child {
+        width: 10%;
+    }
+
+    .user-table thead tr th:nth-child(2) {
+        width: 75%;
+    }
+
+    .user-table thead tr th:nth-child(3) {
+        width: 15%;
+    }
+
+.title-head {
+    font-weight: bolder;
+    font-size: 50px;
+    text-align: center;
+}
+
+.input-step {
+    height: 100dvh;
+    display: flex;
+    align-items: center;
+}
+
+.step-circle {
+    background-color: aqua;
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.side-step {
+    height: 100dvh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    z-index: 999;
+}
+
+.step-connector {
+    height: 100vh;
+    background-color: aqua;
+    position: absolute;
+    width: 7px;
+    top: 28.3%;
+    left: 18%;
+    z-index: -1;
+}
+
+.user-table {
+    width: 100%;
+}
+
+    .user-table thead tr th:first-child {
+        width: 10%;
+    }
+
+    .user-table thead tr th:nth-child(2) {
+        width: 75%;
+    }
+
+    .user-table thead tr th:nth-child(3) {
+        width: 15%;
+    }
+
+.button-add {
+    position: absolute;
+    right: 10%;
+    bottom: 10%;
+    padding: 20px 24px;
+    transition: ease-in-out 100ms;
+}
+
+    .button-add:hover {
+        transform: scale(1.1);
+    }
+
+    .button-add i {
+        color: white;
+        font-size: 17px;
+    }
+
+.project-card {
+    background-color: #121721;
+    width:300px;
+    height:230px;
+    border:none;
+    text-decoration:none;
+    color: #F3F4EE;
+}
+    .project-card:hover {
+        color: #F3F4EE;
+    }
+
+#projectName{
+    width:50%;
+}
+
+#projectDescription{
+    width: 75%;
+    height: 100px;
+}
+
+.projectDatePicker{
+    width:15rem;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid lightgray;
+}
+
+.profile-avatar {
+    background-color: #36C2CE;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    border-radius: 100%;
+    border: 1px solid #121721;
+    margin-left: -5px;
+}
+
+.profile-avatar:first-child{
+    margin-left:0px;
+}
+
+.profile-avatar i{
+    color:#121721;
+    font-size: 13px;
+}
+
+.project-date{
+    display:flex;
+    align-items:center;
+    gap:13px;
+    font-weight:lighter;
+}
+
+    .project-date i {
+        font-size: 20px;
+    }
+
+.page-title{
+    color: #121721;
+}
+    .page-title p span {
+        color: #478CCF;
+        font-weight: bold;
+    }

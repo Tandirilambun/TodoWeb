@@ -1,0 +1,90 @@
+﻿@model TodoWeb.TodoVM.ProjectVM
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_ProjectLayout.cshtml";
+}
+
+<form method="post" asp-controller="Project" asp-action="CreateProject">
+    <div class="row project-form">
+        <div class="col-1">
+            <div class="col-1 side-step">
+                <div class="step-circle">
+                    1
+                </div>
+            </div>
+            <div class="step-connector"></div>
+            <div class="col-1 side-step">
+                <div class="step-circle">
+                    2
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div id="project-detail" class="row input-step">
+                <div class="col">
+                    <h1>Create Project</h1>
+                    <div>
+                        <div class="my-5">
+                            <label for="projectName">Project Name/Title</label>
+                            <input asp-for="ProjectsAdd.ProjectName" type="text" class="form-control" id="projectName" placeholder="Project Name">
+                        </div>
+                        <div class="my-5">
+                            <label for="projectDescription">Project Description</label>
+                            <textarea asp-for="ProjectsAdd.ProjectDescription" class="form-control" id="projectDescription" placeholder="Project Description"></textarea>
+                        </div>
+                        <div class="my-3 d-flex flex-column">
+                            <label for="projectDue">Due Date</label>
+                            <input asp-for="@Model.DueDate" class="projectDatePicker" type="date" id="projectDue" value=""/>
+                        </div>
+                        <div class="my-3 d-flex justify-content-end">
+                            <button id="next-form" type="button" class="btn border" onclick="toFormParticipant()">Next</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="project-participant" class="row input-step">
+                <div class="col">
+                    <h1>Add Participant</h1>
+                    <div>
+                        <table class="table user-table table-borderless table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">
+                                        Add
+                                    </th>
+                                    <th scope="col">
+                                        User
+                                    </th>
+                                    <th scope="col">
+                                        Email
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Users)
+                                {
+                                    <tr>
+                                        <td><input type="checkbox" name="participant[]" value="@item.Id" /></td>
+                                        <td>@item.UserName</td>
+                                        <td>@item.Email</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                        <button type="button" class="btn border" onclick="toFormDetail()">Back</button>
+                        <button type="submit" class="btn border">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+
+</script>
+

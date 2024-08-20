@@ -23,3 +23,12 @@ document.getElementById('select-category').addEventListener('change', function (
     button_add.classList.add("button-translate");
     button_add.classList.remove("button-create");
 });
+
+function toFormParticipant() {
+    const formPage2 = document.getElementById("project-participant");
+    formPage2.scrollIntoView();
+};
+function toFormDetail() {
+    const formPage1 = document.getElementById("project-detail");
+    formPage1.scrollIntoView();
+}

@@ -1,8 +1,203 @@
-﻿
+﻿@model TodoWeb.TodoVM.TaskVM
 @{
     ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_ProjectLayout.cshtml";
+    Random random = new Random();
 }
 
-<h1>Project</h1>
+<div class="mx-5 px-5">
+    <div>
+        <p class="m-0">Task Management</p>
+        <h1>@Model.Projects.ProjectName</h1>
+        <div class="d-flex justify-content-between mt-5">
+            <div class="d-flex align-items-center">
+                <a asp-route="projectTask" class="task-info">
+                    <p class="m-0">All</p>
+                </a>
+                <a asp-route="projectTask" asp-route-status="running" class="task-info">
+                    <p class="m-0">Still Running</p>
+                    <div class="task-badge bg-warning ms-3">@Model.TasksRunning.Count</div>
+                </a>
+                <a asp-route="projectTask" asp-route-status="complete" class="task-info">
+                    <p class="m-0">Completed</p>
+                    <div class="task-badge bg-success ms-3">@Model.TasksComplete.Count</div>
+                </a>
+            </div>
+            <div class="d-flex align-items-center">
+                <div class="project-btn">
+                    <i class="bi bi-people-fill"></i>
+                </div>
+                <div class="project-btn">
+                    <i class="bi bi-github"></i>
+                </div>
+                <div class="project-btn">
+                    <i class="bi bi-three-dots-vertical"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="task-container">
+        @foreach (var task in Model.Tasks)
+        {
+            var colorClass = $"color-palette-{random.Next(1, 5)}";
+            <div class="task-card rounded-5 d-flex flex-column justify-content-between @colorClass">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="task-title">@task.TaskTitle</h5>
+                    <div class="dropend">
+                        <button type="button" class="dropdown-btn" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-three-dots"></i>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#updateTaskModal" onclick="GetValue(@task.TaskId)">
+                                    <i class="bi bi-pencil me-2"></i>
+                                    <span>Edit Task</span>
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider" /></li>
+                            <li>
+                                <form method="post" asp-controller="TaskManagement" asp-action="DoneTask">
+                                    <input value="@task.TaskId" class="mb-4" type="hidden" name="task"/>
+                                    <input class="mb-4" name="project" type="hidden" value="@Model.Projects.ProjectId" />
+                                    <button class="dropdown-item" type="submit">
+                                        <i class="bi bi-check-all me-2"></i>
+                                        <span>Set as Done</span>
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center gap-2 progress-container">
+                    <div class="progress-bar @(task.IsCompleted == true ? "task-complete" : "0%")"></div>
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                    <div class="task-avatar">
+                        <i class="bi bi-person-fill"></i>
+                    </div>
+                    <div class="task-assign">
+                        <p class="m-0">@task.AssignedTo.UserName</p>
+                        <p class="m-0">@task.DueDate.ToString("dd.MM.y")</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+<a class="bg-warning rounded-circle button-add" data-bs-toggle="modal" data-bs-target="#createTaskModal">
+    <i class="bi bi-plus"></i>
+</a>
+
+<!-- Modal Create -->
+<div class="modal fade" id="createTaskModal" tabindex="-1" aria-labelledby="createTaskModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-3">
+            <div class="modal-header">
+                <h5> Modal Create </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" asp-controller="TaskManagement" asp-action="CreateTask">
+                    <div class="task-form">
+                        <div class="d-flex flex-column mb-5">
+                            <input asp-for="@Model.ProjectId" id="task-project" class="mb-4" type="hidden" value="@Model.Projects.ProjectId"/>
+                            <input asp-for="@Model.TaskTitle" id="task-title" class="input-title mb-4" type="text" value="" placeholder="Task Title" />
+                            <textarea asp-for="@Model.TaskDescription" id="task-description" placeholder="Task Description"></textarea>
+                        </div>
+                        <div class="d-flex gap-3">
+                            <div class="d-flex flex-column">
+                                <label for="taskDue">Due to</label>
+                                <input asp-for="@Model.DueDate" class="taskDatePicker" type="date" id="taskDue" value="" max="@Model.Projects.DueDate"/>
+                            </div>
+                            <div class="">
+                                <p class="m-0">Assign to</p>
+                                <div class="assign-to">
+                                    @foreach (var participant in Model.Projects.Participants)
+                                    {
+                                        <input asp-for="@Model.AssignTo" type="radio" class="btn-check" id="@participant.User.UserName" autocomplete="off" value="@participant.UserId">
+                                        <label class="btn btn-outline-primary" for="@participant.User.UserName">@participant.User.UserName</label>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end mt-5">
+                        <div>
+                            <button type="button" class="btn btn-sub btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x"></i></button>
+                            <button type="submit" class="btn btn-sub btn-primary"><i class="bi bi-check"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Update -->
+<div class="modal fade" id="updateTaskModal" tabindex="-1" aria-labelledby="updateTaskModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-3">
+            <div class="modal-header">
+                <h5> Update Modal </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" asp-controller="TaskManagement" asp-action="UpdateTask">
+                    <div class="task-form">
+                        <div class="d-flex flex-column mb-5">
+                            <input asp-for="@Model.TaskId" id="update-task" class="mb-4" type="hidden" />
+                            <input asp-for="@Model.ProjectId" id="update-project" class="mb-4" type="hidden" value="@Model.Projects.ProjectId" />
+                            <input asp-for="@Model.TaskTitle" id="update-title" class="input-title mb-4" type="text"  placeholder="Task Title" />
+                            <textarea asp-for="@Model.TaskDescription" id="update-description" placeholder="Task Description"></textarea>
+                        </div>
+                        <div class="d-flex gap-3">
+                            <div class="d-flex flex-column">
+                                <label for="taskDue">Due to</label>
+                                <input asp-for="@Model.DueDate" class="taskDatePicker" type="date" id="updateTaskDue"  max="@Model.Projects.DueDate" />
+                            </div>
+                            <div class="">
+                                <p class="m-0">Assign to</p>
+                                <div class="assign-to">
+                                    @foreach (var participant in Model.Projects.Participants)
+                                    {
+                                        <input asp-for="@Model.AssignTo" type="radio" class="btn-check" id="@participant.User.NormalizedUserName" autocomplete="off" value="@participant.UserId">
+                                        <label class="btn btn-outline-primary" for="@participant.User.NormalizedUserName">@participant.User.UserName</label>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end mt-5">
+                        <div>
+                            <button type="button" class="btn btn-sub btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x"></i></button>
+                            <button type="submit" class="btn btn-sub btn-primary"><i class="bi bi-check"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function GetValue(id){
+        $.ajax({
+            url: '@Url.Action("GetData")',
+            type:"GET",
+            data: {id : id},
+            success: function (data) {
+                console.log(data)
+                $('#update-task').val(data.taskId);
+                $('#update-title').val(data.taskTitle);
+                $('#update-description').val(data.taskDescription);
+                $('#updateTaskDue').val(data.dueDate);
+            }
+        });
+    }
+</script>
+
 
 

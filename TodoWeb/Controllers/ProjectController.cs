@@ -23,11 +23,6 @@ namespace TodoWeb.Controllers
         {
             var userLogin = _userManager.GetUserId(User);
 
-            //var projectQuery = await _db.Participants
-            //    .Where(part => part.UserId == userLogin)
-            //    .Select(proj => proj.Projects)
-            //    .ToListAsync();
-
             var projectQuery = await _db.Projects
                 .Where(proj => proj.Participants.Any(user => user.UserId == userLogin))
                 .Include(proj => proj.Participants)

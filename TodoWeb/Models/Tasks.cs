@@ -19,7 +19,7 @@ namespace TodoWeb.Models
 
         public bool IsCompleted { get; set; }
 
-        public DateTime? DueDate { get; set; }
+        public DateOnly DueDate { get; set; }
 
         public DateTime? CreatedOn { get; set; }
 

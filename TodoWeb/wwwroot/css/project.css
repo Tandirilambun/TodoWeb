@@ -9,6 +9,19 @@ html {
     }
 }
 
+.color-palette-1 {
+    background-color: #A8D8EA
+}
+.color-palette-2 {
+    background-color: #AA96DA
+}
+.color-palette-3 {
+    background-color: #FCBAD3
+}
+.color-palette-4 {
+    background-color: #FFFFD2
+}
+
 html {
     position: relative;
     min-height: 100%;
@@ -16,6 +29,9 @@ html {
 
 body {
     font-family: 'Lufga', sans-serif;
+    background-color: white;
+    padding-top: 100px;
+    color:black;
 }
 
 
@@ -275,3 +291,217 @@ body {
         color: #478CCF;
         font-weight: bold;
     }
+
+.avatar-tooltip{
+    position:absolute;
+    bottom:-3%;
+    background-color:#121721;
+    border:1px solid #F3F4EE;
+    display:none;
+    font-size:11px;
+    border-radius:6px;
+}
+
+.task-info {
+    background-color: #F3F4EE;
+    /*background-color:black;*/
+    padding: 12px 24px;
+    border-radius: 9999px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: fit-content;
+    color:black;
+    text-decoration:none;
+    margin-right: 8px;
+}
+.task-badge{
+    width:20px;
+    height:20px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    border-radius: 100%;
+    font-size: 11px;
+}
+.task-info:hover {
+    background-color: #121721;
+    color:white;
+}
+
+.task-info-2 p{
+    font-size: 12px;
+}
+.task-info-2 h1 {
+    font-weight: normal;
+}
+.modal-content{
+    height:fit-content;
+    border:none;
+    box-shadow:none;
+    border-radius: 24px;
+}
+.modal-dialog {
+    min-width: 700px;
+}
+
+.task-form textarea{
+    height: 100px;
+    resize:none;
+    font-size:20px;
+    border:none;
+    font-weight:300;
+}
+.task-form textarea:focus{
+    outline:none;
+}
+
+.task-form .input-title{
+    font-size:20px;
+    border:none;
+    font-weight:300;
+}
+
+.task-form input:focus{
+    outline:none
+}
+
+.assign-to{
+    display:flex;
+    flex-wrap:wrap;
+    gap:5px;
+}
+
+.taskDatePicker {
+    width: 15rem;
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+}
+.btn-sub{
+    border-radius:9999px;
+    border: none;
+    padding:4px 8px;
+}
+
+.task-container{
+    display:grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 12px;
+
+}
+
+.task-card{
+    width:333px;
+    height: 180px;
+    /*background-color:white;*/
+    padding:20px;
+}
+.task-avatar {
+    background-color: #F5F7F8;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100%;
+}
+.task-avatar i {
+     font-size:25px;
+     color:lightgray;
+}
+
+.task-title{
+    font-size:15px;
+    color:black;
+}
+
+.task-assign :first-child {
+    font-weight: 500;
+}
+
+.task-assign :nth-child(2){
+    font-size:13px;
+    font-weight:300;
+}
+
+.dropdown-btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100%;
+    background-color:transparent;
+    border:none;
+}
+.dropdown-btn:hover{
+    border: 1px solid #F5F7F8;
+}
+
+.project-btn {
+    border-radius: 100%;
+    background-color: #F3F4EE;
+    padding: 12px 16px;
+    margin-right: 8px
+}
+.project-btn:hover {
+    background-color: #121721;
+    color:white;
+}
+
+.progress-bar{
+    width:100px;
+    height:5px;
+    background-color:white;
+    border-radius:9999px;
+}
+
+.progress-container p{
+    font-size: 11px;
+    font-weight:bold;
+}
+.task-complete{
+    background-color:black;
+}
+
+.floating-nav {
+    background-color: lightgray;
+    position: fixed;
+    bottom: 5%;
+    left: 45.5%;
+    display: flex;
+    gap: 4px;
+    padding: 7px;
+    border-radius: 9999px;
+}
+.floating-nav .float-item{
+    width:50px;
+    height:50px;
+    background-color:white;
+    border-radius: 100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:black;
+    transition: ease-in-out 200ms;
+    cursor:pointer;
+    border:none;
+}
+
+.float-item:hover{
+    background-color:#121721;
+    color:white;
+}
+.floating-nav .float-item:not(:nth-child(2)) i{
+    font-size: 18px;
+
+}.floating-nav .float-item:nth-child(2) i{
+    font-size: 15px;
+}
+.dd-menu{
+    border-radius: 30px;
+}
+.dd-item{
+    border-radius: 22px;
+}

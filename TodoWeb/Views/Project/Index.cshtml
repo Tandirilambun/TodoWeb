@@ -4,36 +4,53 @@
     Layout = "~/Views/Shared/_ProjectLayout.cshtml";
 }
 
-<div class="page-title">
-    <h2 class="m-0">Project</h2>
-    <p class="m-0">You have <span>@Model.Projects.Count</span> Projects</p>
-</div>
-<div class="d-flex gap-5 my-4">
-    @foreach (var proj in Model.Projects)
-    {
-        <a href="#" class="project-card rounded-5 pt-5 pb-4 px-4 card d-flex flex-column">
-            <div class="d-flex justify-content-between">
-                <h5 class="">@proj.ProjectName</h5>
-                <div class=""><i class="bi bi-three-dots"></i></div>
-            </div>
-            <div class="mt-auto d-flex justify-content-between align-content-center">
-                <div class="profile-container d-flex">
-                    @for (int i = 1; i <= proj.Participants.Count; i++)
-                    {
-                        <div class="profile-avatar">
-                            <i class="bi bi-person-fill"></i>
-                        </div>
-                    }
+<div class="container">
+    <div class="page-title">
+        <h2 class="m-0">Project</h2>
+        <p class="m-0">You have <span>@Model.Projects.Count</span> Projects</p>
+    </div>
+    <div class="d-flex gap-5 my-4">
+        @foreach (var proj in Model.Projects)
+        {
+            <a asp-route="projectTask" asp-route-projectId="@proj.ProjectId" class="project-card rounded-5 pt-5 pb-4 px-4 card d-flex flex-column">
+                <div class="d-flex justify-content-between">
+                    <h5 class="">@proj.ProjectName</h5>
+                    <div class=""><i class="bi bi-three-dots"></i></div>
                 </div>
-                <div class="project-date">
-                    <i class="bi bi-calendar2"></i>
-                    <p class="m-0">@proj.DueDate.ToString("MMM y")</p>
+                <div class="mt-auto d-flex justify-content-between align-content-center">
+                    <div class="profile-container d-flex">
+                        @foreach (var projectParticipant in proj.Participants)
+                        {
+                            <div class="profile-avatar" onmouseover="hoveredInfo(this)" onmouseout="hiddenInfo(this)">
+                                <i class="bi bi-person-fill"></i>
+                            </div>
+                            <div class="avatar-tooltip py-1 px-2">
+                                <p class="m-0">@projectParticipant.User.UserName</p>
+                            </div>
+                        }
+                    </div>
+                    <div class="project-date">
+                        <i class="bi bi-calendar2"></i>
+                        <p class="m-0">@proj.DueDate.ToString("MMM y")</p>
+                    </div>
                 </div>
-            </div>
-        </a>
-    }
+            </a>
+        }
+    </div>
 </div>
 
 <a class="bg-warning rounded-circle button-add" asp-controller="Project" asp-action="Create" data-bs-toggle="tooltip" data-bs-title="Create new Project">
     <i class="bi bi-plus"></i>
 </a>
+
+<script>
+    function hoveredInfo(element) {
+        console.log("hovered");
+        element.nextElementSibling.style.display = "block";
+    }
+    function hiddenInfo(element) {
+        console.log("hovered");
+        element.nextElementSibling.style.display = "none";
+    }
+</script>
+

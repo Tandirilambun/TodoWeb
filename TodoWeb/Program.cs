@@ -52,4 +52,10 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Login}/{action=Index}/{id?}");
 
+app.MapControllerRoute(
+    name: "projectTask",
+    pattern: "Project/{projectId}/Task",
+    defaults: new { controller = "TaskManagement", action = "Index" }
+    );
+
 app.Run();

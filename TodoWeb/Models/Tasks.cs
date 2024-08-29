@@ -21,7 +21,7 @@ namespace TodoWeb.Models
 
         public DateOnly DueDate { get; set; }
 
-        public DateTime? CreatedOn { get; set; }
+        public DateTime CreatedOn { get; set; }
 
     }
 }

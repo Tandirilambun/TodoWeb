@@ -26,7 +26,7 @@
                 </div>
             </form>
             <div class="d-flex">
-                <p class="my-0 me-1">on't have any account yet ?</p>
+                <p class="my-0 me-1">Don't have any account yet ?</p>
                 <div class="move-btn" onclick="ToRegister()">
                     Register here
                 </div>
@@ -38,13 +38,23 @@
         <div class="login-card p-5 ">
             <h1 class="">Register</h1>
             <form method="post" asp-controller="Login" asp-action="Register">
-                <div>
-                    <label for="register-username" class="form-label mt-4">Username</label>
-                    <input name="regUsername" id="register-username" type="text" class="form-control" aria-describedby="emailHelp" placeholder="Enter username">
+                <div class="row">
+                    <div class="col">
+                        <label for="register-name" class="form-label mt-4">Name</label>
+                        <input name="regName" id="register-name" type="text" class="form-control" aria-describedby="emailHelp" placeholder="Enter your name">
+                    </div>
+                    <div class="col">
+                        <label for="register-username" class="form-label mt-4">Username</label>
+                        <input name="regUsername" id="register-username" type="text" class="form-control" aria-describedby="emailHelp" placeholder="Enter username">
+                    </div>
                 </div>
                 <div>
                     <label for="register-email" class="form-label mt-4">Email address</label>
                     <input name="regEmail" id="register-email" type="email" class="form-control" aria-describedby="emailHelp" placeholder="Enter email">
+                </div>
+                <div>
+                    <label for="register-phone" class="form-label mt-4">Phone Number</label>
+                    <input name="phoneNumber" id="register-phone" type="text" class="form-control" aria-describedby="emailHelp" placeholder="Enter phone number">
                 </div>
                 <div>
                     <label for="register-password" class="form-label mt-4">Password</label>

@@ -4,7 +4,7 @@
 }
 
 <partial name="_ModalAlert"/>
-<partial name="_NotificationToast"/>
+<partial name="_SwalSuccess"/>
 
 <h1 class="my-5 title-head">Todo</h1>
 <div class="d-flex justify-content-center my-5">
@@ -27,7 +27,7 @@
             @if (todo.IsCompleted)
             {
                 <div class="todo-status rounded-circle bg-success">
-                    <i class="bi bi-check"></i>
+                    <i class="bi bi-check-all"></i>
                 </div>
             }
             <h5 class="">@todo.Title</h5>

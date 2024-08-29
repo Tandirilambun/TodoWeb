@@ -2,6 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
+using Rotativa.AspNetCore;
 using TodoWeb.Data;
 using TodoWeb.Models;
 using TodoWeb.TodoVM;
@@ -32,39 +36,23 @@ namespace TodoWeb.Controllers
             var taskQuery = await _db.Tasks
                 .Where(task => task.ProjectId.ProjectId == projectId)
                 .ToListAsync();
+            ViewBag.TaskCount = taskQuery.Count();
 
-            List<Tasks> taskRunning = new List<Tasks>();
-            List<Tasks> taskComplete = new List<Tasks>();
+            var taskRunning = taskQuery.Where(task => !task.IsCompleted).ToList();
+            var taskComplete = taskQuery.Where(task => task.IsCompleted).ToList();
 
-            foreach (var taskItem in taskQuery) {
-                if (taskItem.IsCompleted) { 
-                    taskComplete.Add(taskItem);
-                }
-                else
-                {
-                    taskRunning.Add(taskItem);
-                }
-            }
-
-            if (status == "running")
+            // Filter task list based on status
+            var filteredTasks = status switch
             {
-                taskQuery = await _db.Tasks
-                .Where(task => task.ProjectId.ProjectId == projectId)
-                .Where(task => task.IsCompleted == false)
-                .ToListAsync();
-            }
-            else if (status == "complete")
-            {
-                taskQuery = await _db.Tasks
-                .Where(task => task.ProjectId.ProjectId == projectId)
-                .Where(task => task.IsCompleted == true)
-                .ToListAsync();
-            }
+                "running" => taskRunning,
+                "complete" => taskComplete,
+                _ => taskQuery
+            };
 
             var viewModel = new TaskVM
             {
                 Projects = projectQuery,
-                Tasks = taskQuery,
+                Tasks = filteredTasks,
                 TasksComplete = taskComplete,
                 TasksRunning = taskRunning
             };
@@ -157,6 +145,63 @@ namespace TodoWeb.Controllers
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
+            }
+        }
+
+        public async Task<IActionResult> ViewPdf(int id)
+        {
+            var taskQuery = await _db.Tasks
+                .Where(t => t.ProjectId.ProjectId == id)
+                .Include(user => user.AssignedTo)
+                .ToListAsync();
+            var projectQuery = await _db.Projects
+                .FindAsync(id);
+            var viewModel = new TaskVM
+            {
+                Projects = projectQuery,
+                Tasks = taskQuery,
+            };
+            return new ViewAsPdf("ViewPdf", viewModel) { 
+                FileName = $"Report_{projectQuery.ProjectName}.pdf"
+            };
+        }
+
+        public async Task<IActionResult> ExportExcel(int id)
+        {
+            var taskQuery = await _db.Tasks
+                .Where(t => t.ProjectId.ProjectId == id)
+                .Include(user => user.AssignedTo)
+                .Select(task => new
+                {
+                    task.TaskTitle,
+                    task.TaskDescription,
+                    task.AssignedTo,
+                    CreatedOn = task.CreatedOn.ToString("dd/MM/yyyy"),
+                    DueDate =  task.DueDate.ToString("dd/MM/yyyy"),
+                    task.IsCompleted
+                })
+                .ToListAsync();
+            var projectQuery = await _db.Projects.FindAsync(id);
+
+            using (ExcelPackage package = new ExcelPackage()) 
+            {
+                //Row & Col
+                var worksheet = package.Workbook.Worksheets.Add("Task");
+                
+                worksheet.Cells[4, 2].Value = projectQuery.ProjectName;
+                worksheet.Cells[5, 2].Value = projectQuery.ProjectDescription;
+                worksheet.Cells[7, 2].Value = projectQuery.DueDate.ToString("dd/MM/yyyy");
+                worksheet.Cells[8, 2].Value = projectQuery.CreatedDate.ToString("dd/MM/yyyy");
+
+                worksheet.Cells[10, 2].LoadFromCollection(taskQuery, true);
+
+                worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+
+                var filename = $"Report-{projectQuery.ProjectName}.xlsx";
+                var contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                var content = package.GetAsByteArray();
+
+                return File(content, contentType, filename);
             }
         }
     }

@@ -10,7 +10,7 @@
         </div>
         <div class="col-3">
             <h5 class="category-title mb-4">Category</h5>
-            <select id="select-category" class="form-select" asp-for="TodoSingle.Category.Category_id" asp-items="Model.Categories"></select>
+            <select id="select-category" class="form-select" asp-for="TodoSingle.Category.Category_id" asp-items="Model.Categories" onchange="catChange()"></select>
         </div>
 
     </div>

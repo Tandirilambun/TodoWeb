@@ -1,33 +1,54 @@
 ﻿@model TodoWeb.TodoVM.TaskVM
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = Model.Projects.ProjectName;
     Layout = "~/Views/Shared/_ProjectLayout.cshtml";
     Random random = new Random();
 }
 
-<div class="mx-5 px-5">
-    <div>
-        <p class="m-0">Task Management</p>
-        <h1>@Model.Projects.ProjectName</h1>
+<div class="mx-5 px-5 pt-5">
+    <div id="project-nav" class="pt-5">
+        <div>
+            <p class="m-0">Task Management</p>
+            <h1>@Model.Projects.ProjectName</h1>
+             <p class="m-0 desc-project"> @Model.Projects.ProjectDescription </p>
+        </div>
         <div class="d-flex justify-content-between mt-5">
             <div class="d-flex align-items-center">
-                <a asp-route="projectTask" class="task-info">
-                    <p class="m-0">All</p>
+                <a asp-route="projectTask" id="all-btn" class="task-info">
+                    All
                 </a>
-                <a asp-route="projectTask" asp-route-status="running" class="task-info">
-                    <p class="m-0">Still Running</p>
-                    <div class="task-badge bg-warning ms-3">@Model.TasksRunning.Count</div>
+                <a asp-route="projectTask" id="running-btn" asp-route-status="running" class="task-info">
+                    Still Running
                 </a>
-                <a asp-route="projectTask" asp-route-status="complete" class="task-info">
-                    <p class="m-0">Completed</p>
-                    <div class="task-badge bg-success ms-3">@Model.TasksComplete.Count</div>
+                <a asp-route="projectTask" id="complete-btn" asp-route-status="complete" class="task-info">
+                    Completed
                 </a>
             </div>
+            <div class="project-info-container">
+                <div class="project-info">
+                    <p class="m-0">Total Task</p>
+                    <h2 class="m-0">@ViewBag.TaskCount</h2>
+                </div>
+                <div class="project-info">
+                    <p class="m-0">On Progress</p>
+                    <h2 class="m-0">@Model.TasksRunning.Count</h2>
+                </div>
+                <div class="project-info">
+                    <p class="m-0">Completed</p>
+                    <h2 class="m-0">@Model.TasksComplete.Count</h2>
+                </div>
+            </div>
             <div class="d-flex align-items-center">
-                <div class="project-btn">
+                <a asp-controller="TaskManagement" asp-action="ViewPdf" asp-route-id="@Model.Projects.ProjectId" class="project-btn" data-bs-toggle="tooltip" data-bs-placement="top" title="Export to PDF">
+                    <i class="bi bi-filetype-pdf"></i>
+                </a>
+                <a asp-controller="TaskManagement" asp-action="ExportExcel" asp-route-id="@Model.Projects.ProjectId" class="project-btn" data-bs-toggle="tooltip" data-bs-placement="top" title="Export to Excel">
+                    <i class="bi bi-filetype-xlsx"></i>
+                </a>
+                <div class="project-btn" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Project Participant">
                     <i class="bi bi-people-fill"></i>
                 </div>
-                <div class="project-btn">
+                <div class="project-btn" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Github Link">
                     <i class="bi bi-github"></i>
                 </div>
                 <div class="project-btn">
@@ -35,8 +56,8 @@
                 </div>
             </div>
         </div>
-    </div>
     <hr />
+    </div>
     <div class="task-container">
         @foreach (var task in Model.Tasks)
         {
@@ -45,7 +66,7 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <h5 class="task-title">@task.TaskTitle</h5>
                     <div class="dropend">
-                        <button type="button" class="dropdown-btn" data-bs-toggle="dropdown" aria-expanded="false">
+                        <button type="button" class="dropdown-btn" data-bs-toggle="dropdown" aria-expanded="false" @(task.IsCompleted ? "hidden" : "")>
                             <i class="bi bi-three-dots"></i>
                         </button>
                         <ul class="dropdown-menu">
@@ -55,10 +76,9 @@
                                     <span>Edit Task</span>
                                 </a>
                             </li>
-                            <li><hr class="dropdown-divider" /></li>
-                            <li>
+                            <li class="">
                                 <form method="post" asp-controller="TaskManagement" asp-action="DoneTask">
-                                    <input value="@task.TaskId" class="mb-4" type="hidden" name="task"/>
+                                    <input value="@task.TaskId" class="mb-4" type="hidden" name="task" />
                                     <input class="mb-4" name="project" type="hidden" value="@Model.Projects.ProjectId" />
                                     <button class="dropdown-item" type="submit">
                                         <i class="bi bi-check-all me-2"></i>
@@ -70,14 +90,14 @@
                     </div>
                 </div>
                 <div class="d-flex align-items-center gap-2 progress-container">
-                    <div class="progress-bar @(task.IsCompleted == true ? "task-complete" : "0%")"></div>
+                    <div class="progress-bar @(task.IsCompleted == true ? "task-complete" : "")"></div>
                 </div>
                 <div class="d-flex align-items-center gap-3">
-                    <div class="task-avatar">
-                        <i class="bi bi-person-fill"></i>
-                    </div>
+                    <a class="task-avatar" asp-controller="Profile" asp-action="Index" asp-route-id="@task.AssignedTo.Id">
+                        <img src="@(task.AssignedTo.ProfilePhotoPath == null ? "/images/profile-icon.png" : task.AssignedTo.ProfilePhotoPath)" alt="Alternate Text" loading="lazy"/>
+                    </a>
                     <div class="task-assign">
-                        <p class="m-0">@task.AssignedTo.UserName</p>
+                        <p class="m-0">@task.AssignedTo.Name</p>
                         <p class="m-0">@task.DueDate.ToString("dd.MM.y")</p>
                     </div>
                 </div>
@@ -86,17 +106,11 @@
     </div>
 </div>
 
-
-<a class="bg-warning rounded-circle button-add" data-bs-toggle="modal" data-bs-target="#createTaskModal">
-    <i class="bi bi-plus"></i>
-</a>
-
 <!-- Modal Create -->
 <div class="modal fade" id="createTaskModal" tabindex="-1" aria-labelledby="createTaskModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content p-3">
             <div class="modal-header">
-                <h5> Modal Create </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -118,7 +132,7 @@
                                     @foreach (var participant in Model.Projects.Participants)
                                     {
                                         <input asp-for="@Model.AssignTo" type="radio" class="btn-check" id="@participant.User.UserName" autocomplete="off" value="@participant.UserId">
-                                        <label class="btn btn-outline-primary" for="@participant.User.UserName">@participant.User.UserName</label>
+                                        <label class="btn btn-outline-primary" for="@participant.User.UserName">@participant.User.Name</label>
                                     }
                                 </div>
                             </div>
@@ -141,7 +155,6 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content p-3">
             <div class="modal-header">
-                <h5> Update Modal </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -164,7 +177,7 @@
                                     @foreach (var participant in Model.Projects.Participants)
                                     {
                                         <input asp-for="@Model.AssignTo" type="radio" class="btn-check" id="@participant.User.NormalizedUserName" autocomplete="off" value="@participant.UserId">
-                                        <label class="btn btn-outline-primary" for="@participant.User.NormalizedUserName">@participant.User.UserName</label>
+                                        <label class="btn btn-outline-primary" for="@participant.User.NormalizedUserName">@participant.User.Name</label>
                                     }
                                 </div>
                             </div>
@@ -172,7 +185,6 @@
                     </div>
                     <div class="d-flex justify-content-end mt-5">
                         <div>
-                            <button type="button" class="btn btn-sub btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x"></i></button>
                             <button type="submit" class="btn btn-sub btn-primary"><i class="bi bi-check"></i></button>
                         </div>
                     </div>
@@ -197,6 +209,27 @@
             }
         });
     }
+
+    window.addEventListener("DOMContentLoaded", () => {
+        const [_, status] = window.location.href.split("="); // Destructure to get the status from URL
+
+        const btnMap = {
+            running: "running-btn",
+            complete: "complete-btn",
+            all: "all-btn"
+        };
+
+        const statusClassMap = {
+            running: "bg-warning",
+            complete: "bg-success",
+            default: "bg-info"
+        };
+
+        const buttonId = btnMap[status] || btnMap.all;
+        const statusClass = statusClassMap[status] || statusClassMap.default;
+
+        document.getElementById(buttonId).classList.add(statusClass);
+    });
 </script>
 
 

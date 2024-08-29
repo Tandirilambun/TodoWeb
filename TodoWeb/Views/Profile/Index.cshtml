@@ -1,0 +1,61 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<User> userManager
+@model TodoWeb.TodoVM.ProfileVM;
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_ProjectLayout.cshtml";
+    var user = await userManager.GetUserAsync(User);
+}
+<div class="container mt-5 pt-5">
+    <div class="profile-card">
+        <div class="cover-photo"></div>
+        <div class="profile-photo">
+            <img src="@(Model.Profile.ProfilePhotoPath == null ? "/images/profile-icon.png" : Model.Profile.ProfilePhotoPath)" alt="Profile Photo">
+        </div>
+        <div class="profile-info">
+            <div class="" @(Model.Profile.Id.Equals(user.Id) ? "" : "hidden" ) >
+                <div onclick="uploadFile()" class="btn btn-primary btn-upload">
+                    <h5 class="m-0"> <i class="bi bi-cloud-upload-fill me-2"></i>Upload file</h5>
+                    <p class="m-0" id="file-name"></p>
+                </div>
+                <form method="post" asp-controller="Profile" asp-action="UploadProfilePicture" enctype="multipart/form-data">
+                    <input id="file-photo" type="file" asp-for="formFile" value="" accept="image/png, image/gif, image/jpeg" hidden/>
+                    <button id="submit-photo" type="submit" class="btn btn-secondary">Upload</button>
+                </form>
+            </div>
+            <div class="name-verified">
+                <h2>@Model.Profile.Name</h2>
+            </div>
+            <div class="counts">
+                <div>
+                    <h5 class="data-head">Email</h5>
+                    <p class="m-0 data-user">@Model.Profile.Email</p>
+                </div>
+                <div>
+                    <h5 class="data-head">Username</h5>
+                    <p class="m-0 data-user">@Model.Profile.UserName</p>
+                </div>
+                <div>
+                    <h5 class="data-head">Phone Number</h5>
+                    <p class="m-0 data-user">@Model.Profile.PhoneNumber</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    const inputId = document.querySelector("#file-photo");
+    function uploadFile() {
+        console.log("clicked");
+        inputId.click();
+    }
+    inputId.addEventListener('change', function () {
+        document.getElementById("file-name").innerHTML = (this.value).replace(/.*[\/\\]/, '')
+        const btnSubmit = document.getElementById("submit-photo");
+        btnSubmit.style.display = "block";
+    })
+</script>
+
+

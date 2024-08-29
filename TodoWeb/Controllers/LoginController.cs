@@ -27,7 +27,7 @@ namespace TodoWeb.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> Register(string regUsername, string regEmail, string regPassword)
+        public async Task<IActionResult> Register(string regName, string regUsername, string regEmail, string phoneNumber, string regPassword)
         {
 
             var userByUsername = await _userManager.FindByNameAsync(regUsername);
@@ -45,11 +45,10 @@ namespace TodoWeb.Controllers
             }
             var user = new User
             {
-                Username = regUsername,
+                Name = regName,
                 UserName = regUsername,
-                User_email = regEmail,
                 Email = regEmail,
-                User_password = BCrypt.Net.BCrypt.HashPassword(regPassword),
+                PhoneNumber = phoneNumber,
             };
             var result = await _userManager.CreateAsync(user, regPassword);
             if (result.Succeeded)

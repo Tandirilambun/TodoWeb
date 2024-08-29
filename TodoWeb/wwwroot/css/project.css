@@ -30,7 +30,6 @@ html {
 body {
     font-family: 'Lufga', sans-serif;
     background-color: white;
-    padding-top: 100px;
     color:black;
 }
 
@@ -47,8 +46,9 @@ body {
     align-items: center;
 }
 
+
 .step-circle {
-    background-color: aqua;
+    background-color: lightgray;
     width: 30px;
     height: 30px;
     border-radius: 100%;
@@ -68,10 +68,10 @@ body {
 
 .step-connector {
     height: 100vh;
-    background-color: aqua;
+    background-color: lightgray;
     position: absolute;
     width: 7px;
-    top: 28.3%;
+    top: 24.3%;
     left: 18%;
     z-index: -1;
 }
@@ -85,125 +85,11 @@ body {
     }
 
     .user-table thead tr th:nth-child(2) {
-        width: 75%;
+        width: 45%;
     }
 
     .user-table thead tr th:nth-child(3) {
-        width: 15%;
-    }
-
-.title-head {
-    font-weight: bolder;
-    font-size: 50px;
-    text-align: center;
-}
-
-.input-step {
-    height: 100dvh;
-    display: flex;
-    align-items: center;
-}
-
-.step-circle {
-    background-color: aqua;
-    width: 30px;
-    height: 30px;
-    border-radius: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.side-step {
-    height: 100dvh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    z-index: 999;
-}
-
-.step-connector {
-    height: 100vh;
-    background-color: aqua;
-    position: absolute;
-    width: 7px;
-    top: 28.3%;
-    left: 18%;
-    z-index: -1;
-}
-
-.user-table {
-    width: 100%;
-}
-
-    .user-table thead tr th:first-child {
-        width: 10%;
-    }
-
-    .user-table thead tr th:nth-child(2) {
-        width: 75%;
-    }
-
-    .user-table thead tr th:nth-child(3) {
-        width: 15%;
-    }
-
-.title-head {
-    font-weight: bolder;
-    font-size: 50px;
-    text-align: center;
-}
-
-.input-step {
-    height: 100dvh;
-    display: flex;
-    align-items: center;
-}
-
-.step-circle {
-    background-color: aqua;
-    width: 30px;
-    height: 30px;
-    border-radius: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.side-step {
-    height: 100dvh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    z-index: 999;
-}
-
-.step-connector {
-    height: 100vh;
-    background-color: aqua;
-    position: absolute;
-    width: 7px;
-    top: 28.3%;
-    left: 18%;
-    z-index: -1;
-}
-
-.user-table {
-    width: 100%;
-}
-
-    .user-table thead tr th:first-child {
-        width: 10%;
-    }
-
-    .user-table thead tr th:nth-child(2) {
-        width: 75%;
-    }
-
-    .user-table thead tr th:nth-child(3) {
-        width: 15%;
+        width: 45%;
     }
 
 .button-add {
@@ -224,15 +110,17 @@ body {
     }
 
 .project-card {
-    background-color: #121721;
-    width:300px;
-    height:230px;
-    border:none;
-    text-decoration:none;
+    width: 315px;
+    height: 150px;
+    border: none;
+    text-decoration: none;
     color: #F3F4EE;
+    color: #121721;
+    transition:ease-in-out 200ms;
 }
     .project-card:hover {
-        color: #F3F4EE;
+        color: #121721;
+        transform: scale(1.02);
     }
 
 #projectName{
@@ -251,17 +139,33 @@ body {
     border: 1px solid lightgray;
 }
 
-.profile-avatar {
-    background-color: #36C2CE;
+.profile-avatar img{
+    background-color: lightgray;
     width: 30px;
     height: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 4px;
     border-radius: 100%;
-    border: 1px solid #121721;
+    border: 2px solid white;
+    object-fit:cover;
+    object-position:center;
+}
+.profile-avatar {
     margin-left: -5px;
+}
+.other-participant {
+    background-color: lightgray;
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    border: 2px solid white;
+    margin-left: -5px;
+    text-align: center;
+    font-size: 0.8em;
+    font-weight: bold;
+    align-content:center;
+    color:white;
 }
 
 .profile-avatar:first-child{
@@ -277,7 +181,7 @@ body {
     display:flex;
     align-items:center;
     gap:13px;
-    font-weight:lighter;
+    font-weight:300;
 }
 
     .project-date i {
@@ -300,11 +204,11 @@ body {
     display:none;
     font-size:11px;
     border-radius:6px;
+    color:white;
 }
 
 .task-info {
     background-color: #F3F4EE;
-    /*background-color:black;*/
     padding: 12px 24px;
     border-radius: 9999px;
     display: flex;
@@ -326,7 +230,12 @@ body {
 }
 .task-info:hover {
     background-color: #121721;
-    color:white;
+    color: white;
+}
+
+.task-info.active {
+    background-color: #121721;
+    color: white;
 }
 
 .task-info-2 p{
@@ -388,28 +297,26 @@ body {
     display:grid;
     grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 12px;
-
 }
 
 .task-card{
     width:333px;
-    height: 180px;
-    /*background-color:white;*/
+    height: 200px;
     padding:20px;
 }
 .task-avatar {
     background-color: #F5F7F8;
     width: 40px;
     height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     border-radius: 100%;
 }
-.task-avatar i {
-     font-size:25px;
-     color:lightgray;
-}
+    .task-avatar img {
+        width: 40px;
+        height: 40px;
+        border-radius: 100%;
+        object-fit:cover;
+        object-position:center;
+    }
 
 .task-title{
     font-size:15px;
@@ -418,6 +325,7 @@ body {
 
 .task-assign :first-child {
     font-weight: 500;
+    font-size:0.8em;
 }
 
 .task-assign :nth-child(2){
@@ -443,7 +351,9 @@ body {
     border-radius: 100%;
     background-color: #F3F4EE;
     padding: 12px 16px;
-    margin-right: 8px
+    margin-right: 8px;
+    cursor:pointer;
+    color:#121721;
 }
 .project-btn:hover {
     background-color: #121721;
@@ -462,7 +372,7 @@ body {
     font-weight:bold;
 }
 .task-complete{
-    background-color:black;
+    background-color:#121721;
 }
 
 .floating-nav {
@@ -498,10 +408,134 @@ body {
 
 }.floating-nav .float-item:nth-child(2) i{
     font-size: 15px;
+}.floating-nav .float-item:nth-child(3) i{
+    font-size: 15px;
 }
 .dd-menu{
     border-radius: 30px;
+    border:none;
+    background-color:lightgray;
 }
 .dd-item{
     border-radius: 22px;
+    background-color:white;
+    cursor:pointer;
+}
+.dd-item:hover{
+    background-color:#121721
+}
+#project-nav{
+    position:sticky;
+    top:0%;
+    background-color:white;
+    z-index:9;
+}
+
+.profile-card {
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    background-color: #fff;
+    text-align: center;
+}
+
+.cover-photo {
+    width: 100%;
+    height: 200px;
+    background-color:gray;
+}
+
+.profile-photo {
+    position: relative;
+    top: -100px;
+    margin-bottom: -50px;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 5px solid #fff;
+    margin: 0 auto;
+}
+
+    .profile-photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        background-color:lightgray;
+    }
+
+.profile-info {
+    padding: 20px;
+    margin-top: -100px;
+}
+
+.counts {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+.counts .data-head{
+    color:slategray;
+}
+
+.name-verified {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+
+}
+
+    .name-verified h2 {
+        font-size: 40px;
+        margin: 0;
+    }
+
+#submit-photo{
+    display:none;
+}
+
+.btn-upload h5{
+    font-size:16px;
+}
+
+.desc-project{
+    color:lightslategray;
+    width:50rem;
+}
+
+.pdf-table {
+    width: 100%;
+    font-size:15px;
+}
+
+    .pdf-table thead tr th:nth-child(n+3) {
+        width: 12%;
+    }
+    .pdf-table tbody tr td:nth-child(n+3) {
+        text-align:center;
+    }
+
+.project-info p{
+    font-size:11px;
+    color:lightslategray;
+}
+.project-info h2{
+    font-weight: 400;
+}
+
+#pdf-report{
+    font-family:'Times New Roman', Times, serif;
+}
+
+.project-info-container{
+    display:flex;
+    gap:5rem;
+}
+
+.project-container {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
 }

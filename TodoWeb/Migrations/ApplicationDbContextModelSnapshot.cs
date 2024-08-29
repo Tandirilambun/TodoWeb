@@ -195,7 +195,6 @@ namespace TodoWeb.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ProjectId"));
 
                     b.Property<string>("CreatedById")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedDate")
@@ -228,7 +227,6 @@ namespace TodoWeb.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("TaskId"));
 
                     b.Property<string>("AssignedToId")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("CreatedOn")
@@ -287,7 +285,6 @@ namespace TodoWeb.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Note_id");
@@ -327,6 +324,10 @@ namespace TodoWeb.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
@@ -344,6 +345,9 @@ namespace TodoWeb.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("ProfilePhotoPath")
+                        .HasColumnType("text");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
 
@@ -353,21 +357,6 @@ namespace TodoWeb.Migrations
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
-
-                    b.Property<string>("User_email")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("User_id")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("User_password")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -455,9 +444,7 @@ namespace TodoWeb.Migrations
                 {
                     b.HasOne("TodoWeb.Models.User", "CreatedBy")
                         .WithMany("Projects")
-                        .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CreatedById");
 
                     b.Navigation("CreatedBy");
                 });
@@ -466,9 +453,7 @@ namespace TodoWeb.Migrations
                 {
                     b.HasOne("TodoWeb.Models.User", "AssignedTo")
                         .WithMany("Tasks")
-                        .HasForeignKey("AssignedToId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AssignedToId");
 
                     b.HasOne("TodoWeb.Models.Projects", "ProjectId")
                         .WithMany()
@@ -491,9 +476,7 @@ namespace TodoWeb.Migrations
 
                     b.HasOne("TodoWeb.Models.User", "User")
                         .WithMany("Todos")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Category");
 

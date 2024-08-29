@@ -13,7 +13,7 @@
         </div>
         <div class="col-3">
             <h5 class="category-title mb-4">Category</h5>
-            <select id="select-category" class="form-select" asp-for="@Model.Category_note_id" asp-items="Model.Categories" value="@Model.Category_note_id"></select>
+            <select id="select-category" class="form-select" asp-for="@Model.Category_note_id" asp-items="Model.Categories" value="@Model.Category_note_id" onchange="catChange()"></select>
             <div class="form-check my-2">
                 <input class="form-check-input" type="checkbox" id="flexCheckDefault" asp-for="@Model.Note_completed">
                 <label class="form-check-label" for="flexCheckDefault">

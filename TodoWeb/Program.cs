@@ -1,8 +1,12 @@
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Rotativa.AspNetCore;
 using TodoWeb.Data;
 using TodoWeb.Models;
+using TodoWeb.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,7 +34,24 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.LoginPath = "/Login";
 });
 
+string credentialPath = Path.Combine(AppContext.BaseDirectory, "todowebapp-77747-firebase-adminsdk-ljvlq-df170c632d.json");
+Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", credentialPath);
+
+Console.WriteLine($"Credential Path : {credentialPath}");
+Console.WriteLine($"File Exist : {File.Exists(credentialPath)}");
+
+FirebaseApp.Create(new AppOptions()
+{
+    Credential = GoogleCredential.GetApplicationDefault()
+});
+
+builder.Services.Configure<FirebaseConfig>(builder.Configuration.GetSection("FirebaseConfig"));
+builder.Services.AddTransient<FirebaseStorageService>();
+
+
 var app = builder.Build();
+
+RotativaConfiguration.Setup(app.Environment.WebRootPath, "Rotativa");
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

@@ -1,0 +1,49 @@
+﻿@model TodoWeb.TodoVM.TaskVM
+@{
+    ViewData["Title"] = "Pdf";
+    Layout = "~/Views/Shared/_PdfLayout.cshtml";
+}
+
+<div id="pdf-report">
+    <div>
+        <h1>@Model.Projects.ProjectName</h1>
+        <h4>Project Created : @Model.Projects.CreatedDate</h4>
+        <h4>Project Due Date : @Model.Projects.DueDate</h4>
+        <p>@Model.Projects.ProjectDescription</p>
+    </div>
+    <div>
+        <table class="pdf-table">
+            <thead>
+                <tr>
+                    <th scope="col">
+                        Title
+                    </th>
+                    <th scope="col">
+                        Assign To
+                    </th>
+                    <th scope="col">
+                        Created On
+                    </th>
+                    <th scope="col">
+                        Due Date
+                    </th>
+                    <th scope="col">
+                        Status
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var task in Model.Tasks)
+                {
+                    <tr>
+                        <td>@task.TaskTitle</td>
+                        <td>@task.AssignedTo.Name</td>
+                        <td>@task.CreatedOn.ToString("dd-MM-yyyy")</td>
+                        <td>@task.DueDate.ToString("dd-MM-yyyy")</td>
+                        <td>@(task.IsCompleted ? "Completed" : "On Progress")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

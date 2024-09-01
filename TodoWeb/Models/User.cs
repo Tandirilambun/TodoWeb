@@ -19,5 +19,7 @@ namespace TodoWeb.Models
         public ICollection<Participants> Participants { get; set; }
 
         public ICollection<Tasks> Tasks { get; set; }
+
+        public ICollection<Message> Messages { get; set; }
     }
 }

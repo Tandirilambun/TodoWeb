@@ -27,16 +27,14 @@
                         {
                             var participant = proj.Participants.ElementAt(i);
 
-                            <div class="profile-avatar" onmouseover="hoveredInfo(this)" onmouseout="hiddenInfo(this)">
+                            <div class="profile-avatar" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="@participant.User.Name" data-bs-custom-class="custom-tooltip">
                                 <img src="@(participant.User.ProfilePhotoPath == null ? "/images/profile-icon.png" : participant.User.ProfilePhotoPath)" alt="Alternate Text" />
                             </div>
-                            <div class="avatar-tooltip py-1 px-2">
-                                <p class="m-0">@participant.User.Name</p>
-                            </div>
                         }
+
                         @if(otherPar != 0)
                         {
-                            <div class="other-participant" onmouseover="hoveredInfo(this)" onmouseout="hiddenInfo(this)">
+                            <div class="other-participant" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="@otherPar more" data-bs-custom-class="custom-tooltip">
                                 <p class="m-0">+@otherPar</p>
                             </div>
                         }
@@ -50,13 +48,4 @@
         }
     </div>
 </div>
-
-<script>
-    function hoveredInfo(element) {
-        element.nextElementSibling.style.display = "block";
-    }
-    function hiddenInfo(element) {
-        element.nextElementSibling.style.display = "none";
-    }
-</script>
 

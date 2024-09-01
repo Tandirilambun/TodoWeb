@@ -14,6 +14,7 @@ namespace TodoWeb.Data
         public DbSet<Projects> Projects { get; set; }
         public DbSet<Participants> Participants { get; set; }
         public DbSet<Tasks> Tasks { get; set; }
+        public DbSet<Message> Messages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -29,6 +30,21 @@ namespace TodoWeb.Data
                 .HasOne(part => part.User)
                 .WithMany(p => p.Participants)
                 .HasForeignKey(p => p.UserId);
+
+            builder.Entity<Message>()
+                .HasKey(part => part.ChatId);
+            builder.Entity<Message>()
+                .Property(part => part.ChatId)
+                .HasDefaultValueSql("uuid_generate_v4()");
+            builder.Entity<Message>()
+                .HasOne(part => part.User)
+                .WithMany(p => p.Messages)
+                .HasForeignKey(p => p.IdUser);
+            builder.Entity<Message>()
+                .HasOne(part => part.Projects)
+                .WithMany(p => p.Messages)
+                .HasForeignKey(p => p.IdProject);
+                
         }
 
     }

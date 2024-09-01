@@ -9,6 +9,7 @@ namespace TodoWeb.TodoVM
         public List<Tasks> TasksComplete {get; set;}
         public List<Tasks> TasksRunning {get; set;}
         public List<User> Users { get; set; }
+        public List<Message> Messages { get; set;}
         public int ProjectId { get; set; }
 
         public int TaskId { get; set; }

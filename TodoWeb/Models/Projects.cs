@@ -18,5 +18,7 @@ namespace TodoWeb.Models
         public User CreatedBy { get; set; }
 
         public ICollection<Participants> Participants { get; set; }
+
+        public ICollection<Message> Messages { get; set; }
     }
 }

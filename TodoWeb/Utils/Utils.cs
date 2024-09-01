@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Security.Cryptography;
+//using System.Security.Cryptography;
 using TodoWeb.Data;
 using TodoWeb.Models;
 
@@ -14,15 +14,16 @@ namespace TodoWeb.Utils
                 .FirstOrDefaultAsync();
         }
 
-        public static string GenerateKey()
-        {
-            using ( var rng = new RNGCryptoServiceProvider())
-            {
-                var key = new byte[32];
-                rng.GetBytes(key);
-                return Convert.ToBase64String(key);
-            }
-        }
+        //public static string GenerateKey()
+        //{
+        //    using ( var rng = new RNGCryptoServiceProvider())
+        //    {
+        //        var key = new byte[32];
+        //        rng.GetBytes(key);
+        //        return Convert.ToBase64String(key);
+        //    }
+        //}
+
         public static DateTime GetJktTime()
         {
             TimeZoneInfo jakartaZone = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time");

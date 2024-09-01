@@ -38,6 +38,10 @@ namespace TodoWeb.Controllers
                 .ToListAsync();
             ViewBag.TaskCount = taskQuery.Count();
 
+            var messageQuery = await _db.Messages
+                .Where(msg => msg.IdProject == projectId)
+                .Include(user => user.User)
+                .ToListAsync();
             var taskRunning = taskQuery.Where(task => !task.IsCompleted).ToList();
             var taskComplete = taskQuery.Where(task => task.IsCompleted).ToList();
 
@@ -54,7 +58,9 @@ namespace TodoWeb.Controllers
                 Projects = projectQuery,
                 Tasks = filteredTasks,
                 TasksComplete = taskComplete,
-                TasksRunning = taskRunning
+                TasksRunning = taskRunning,
+                Messages = messageQuery
+                
             };
 
             return View(viewModel);

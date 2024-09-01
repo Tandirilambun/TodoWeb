@@ -1,8 +1,11 @@
-﻿@model TodoWeb.TodoVM.TaskVM
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<User> userManager
+@model TodoWeb.TodoVM.TaskVM
 @{
     ViewData["Title"] = Model.Projects.ProjectName;
     Layout = "~/Views/Shared/_ProjectLayout.cshtml";
     Random random = new Random();
+    var user = await userManager.GetUserAsync(User);
 }
 
 <div class="mx-5 px-5 pt-5">
@@ -39,16 +42,16 @@
                 </div>
             </div>
             <div class="d-flex align-items-center">
-                <a asp-controller="TaskManagement" asp-action="ViewPdf" asp-route-id="@Model.Projects.ProjectId" class="project-btn" data-bs-toggle="tooltip" data-bs-placement="top" title="Export to PDF">
+                <a asp-controller="TaskManagement" asp-action="ViewPdf" asp-route-id="@Model.Projects.ProjectId" class="project-btn" data-bs-toggle="tooltip" data-bs-placement="top" title="Export to PDF" data-bs-custom-class="custom-tooltip">
                     <i class="bi bi-filetype-pdf"></i>
                 </a>
-                <a asp-controller="TaskManagement" asp-action="ExportExcel" asp-route-id="@Model.Projects.ProjectId" class="project-btn" data-bs-toggle="tooltip" data-bs-placement="top" title="Export to Excel">
+                <a asp-controller="TaskManagement" asp-action="ExportExcel" asp-route-id="@Model.Projects.ProjectId" class="project-btn" data-bs-toggle="tooltip" data-bs-placement="top" title="Export to Excel" data-bs-custom-class="custom-tooltip">
                     <i class="bi bi-filetype-xlsx"></i>
                 </a>
-                <div class="project-btn" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Project Participant">
+                <div class="project-btn" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Project Participant" data-bs-custom-class="custom-tooltip">
                     <i class="bi bi-people-fill"></i>
                 </div>
-                <div class="project-btn" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Github Link">
+                <div class="project-btn" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Github Link" data-bs-custom-class="custom-tooltip">
                     <i class="bi bi-github"></i>
                 </div>
                 <div class="project-btn">
@@ -194,7 +197,34 @@
     </div>
 </div>
 
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasChat" aria-labelledby="offcanvasChatLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasChatLabel">Project Chat</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body chat-container">
+        <div class="message-container">
+            <div id="messagesList">
+                @foreach(var chat in Model.Messages)
+                {
+                    <div class="bubble-chat @(chat.User.Name == user.Name ? "user" : "other")">
+                        <p>@chat.User.Name</p>
+                        <p>@chat.Content</p>
+                        <span>@chat.TimeStamp.AddHours(7).ToString("HH.mm")</span>
+                    </div>
+                }
+            </div>
+            <div class="input-section">
+                <input type="hidden" id="projectId" value="@Model.Projects.ProjectId" />
+                <input type="text" id="messageInput" placeholder="Message"/>
+                <button class="send-button" id="sendButton"><i class="bi bi-send-fill m-0 p-0"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.min.js" integrity="sha512-7SRCYIJtR6F8ocwW7UxW6wGKqbSyqREDbfCORCbGLatU0iugBLwyOXpzhkPyHIFdBO0K2VCu57fvP2Twgx1o2A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
+    //untuk mengambil Old Value dan ditampilkan di Modal Update
     function GetValue(id){
         $.ajax({
             url: '@Url.Action("GetData")',
@@ -211,26 +241,139 @@
     }
 
     window.addEventListener("DOMContentLoaded", () => {
-        const [_, status] = window.location.href.split("="); // Destructure to get the status from URL
+        // Destructure to get the status from URL
+        const [_, status] = window.location.href.split("="); 
 
+        // Mapping element Id 
         const btnMap = {
             running: "running-btn",
             complete: "complete-btn",
             all: "all-btn"
         };
 
+        // Mapping class yang akan tambahkan pada class list
         const statusClassMap = {
             running: "bg-warning",
             complete: "bg-success",
             default: "bg-info"
         };
 
+        // Mengambil value dari btnMap sesuai dengan status yang sudah di destructuring
         const buttonId = btnMap[status] || btnMap.all;
+
+        // Mengambil value dari statusClassMap sesuai dengan status yang sudah di destructuring
         const statusClass = statusClassMap[status] || statusClassMap.default;
 
+        // Menambahkan value dari statusClassMap kedalam id yang sudah diambil
         document.getElementById(buttonId).classList.add(statusClass);
+
+        // Mengambil id dari container messageList
+        const chatContainer = document.getElementById("messagesList");
+
+        // Mengatur scroll dari container agar langsung berada dibawah
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+
     });
+
+    // Menginisialisasi connection ke signalR sesuai dengan endpoint yang sudah ditetapkan pada asp.net Route
+    var connection = new signalR.HubConnectionBuilder().withUrl("/chat").build();
+
+    // Connecting ke Websocket
+    connection.start().catch(function (err) {
+        return console.error(err.toString());
+    });
+
+    // Menginisialisasikan button dan event pada button
+    document.getElementById("sendButton").addEventListener("click", function (event) {
+
+        // Initialization variable object sesuai dengan id
+        const projectId = document.getElementById("projectId");
+        const message = document.getElementById("messageInput");
+
+        // Memanggil method "SendMessage" pada server dengan parameter project id dan message
+        connection.invoke("SendMessage", parseInt(projectId.value), message.value).then(function () {
+            
+            // Set Input Field kembali kosong
+            message.value = ""
+        }).catch(function (err) {
+
+            // Mengembalikkan error untuk ditampilkan pada console jika method invoke gagal
+            return console.error(err.toString());
+        });
+        event.preventDefault();
+    });
+
+    // Memanggil method "ReceiveMessage" pada server yang mengembalikkan 2 nilai 
+    connection.on("ReceiveMessage", function (user, message) {
+
+        // Initialization object dengan id messageList
+        const chatContainer = document.getElementById("messagesList");
+
+        // Variable untuk menampung nama dari user yang sedang login
+        let aspName = "@user.Name"
+
+        // Membuat sebuah elemen div
+        let bubbleChat = document.createElement('div');
+
+        // Cek apakah user yang dikirimkan dari RecieveMessage sama dengan user yang sedang login
+        if (user == aspName) {
+
+            // Jika T, maka akan menambahkan class bubble-chat & user ke elemen div
+            bubbleChat.classList.add('bubble-chat', "user");
+        }else{
+
+            // Jika F, maka akan menambahkan class bubble-chat & other ke elemen div
+            bubbleChat.classList.add('bubble-chat', "other");
+        }
+
+        // Membuat sebuah elemen p
+        let nameParagraph = document.createElement('p');
+
+        // Menambahkan nama user ke dalam elemen p sesuai yang dikirim dari method RecieveMessage
+        nameParagraph.innerText = user;
+
+        //Menambahkan elemen p ke dalam elemen div sebelumnya
+        bubbleChat.appendChild(nameParagraph);
+
+        // Membuat sebuah elemen p
+        let messageParagraph = document.createElement('p');
+
+        // Menambahkan pesan ke dalam elemen p sesuai yang dikirim dari method RecieveMessage
+        messageParagraph.innerText = message;
+
+        //Menambahkan elemen p ke dalam elemen div sebelumnya
+        bubbleChat.appendChild(messageParagraph);
+
+        // Membuat sebuah elemen span
+        let chatTime = document.createElement('span');
+
+        // Initialization Date (waktu sekarang)
+        const now = new Date();
+
+        // Mengambil data jam dan dikonversi ke string
+        const hours = now.getHours().toString();
+
+        // Mengambil data menit dan dikonversi ke string
+        const minutes = now.getMinutes().toString();
+
+        // Initialization format jam dalam bentuk string
+        const timeString = `${hours}.${minutes}`;
+
+        // Menambahkan timeString ke dalam elemen span
+        chatTime.innerText = timeString;
+
+        // Menambahakan elemen span ke dalam div
+        bubbleChat.appendChild(chatTime);
+
+        // Menambahkan elemen div ke dalam chat container
+        chatContainer.appendChild(bubbleChat);
+
+        // Scroll ke pesan yang baru saja masuk
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    });
+
 </script>
+
 
 
 

@@ -23,6 +23,17 @@ namespace TodoWeb.Controllers
         {
             var userLogin = _userManager.GetUserId(User);
 
+            //var testQuery = await _db.Projects
+            //    .Where(proj => proj.Participants.Any(user => user.UserId == userLogin))
+            //    .Include(proj => proj.Participants)
+            //    .ThenInclude(user => user.User)
+            //    .Select(proj => new
+            //    {
+            //        Project = proj,
+            //        TaskCount = _db.Tasks.Count(task => task.ProjectId.ProjectId == proj.ProjectId),
+            //    })
+            //    .ToListAsync();
+
             var projectQuery = await _db.Projects
                 .Where(proj => proj.Participants.Any(user => user.UserId == userLogin))
                 .Include(proj => proj.Participants)

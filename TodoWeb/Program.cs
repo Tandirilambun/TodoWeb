@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Rotativa.AspNetCore;
+using TodoWeb;
 using TodoWeb.Data;
 using TodoWeb.Models;
 using TodoWeb.Services;
@@ -48,6 +49,8 @@ FirebaseApp.Create(new AppOptions()
 builder.Services.Configure<FirebaseConfig>(builder.Configuration.GetSection("FirebaseConfig"));
 builder.Services.AddTransient<FirebaseStorageService>();
 
+builder.Services.AddSignalR();
+builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
@@ -78,5 +81,11 @@ app.MapControllerRoute(
     pattern: "Project/{projectId}/Task",
     defaults: new { controller = "TaskManagement", action = "Index" }
     );
+
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapHub<ChatHub>("/chat");
+});
 
 app.Run();
